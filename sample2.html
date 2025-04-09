@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Copy Commands to Clipboard</title>
+  <style>
+    /* Basic reset */
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background-color: #f0f0f0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+    }
+
+    /* Title styling */
+    .title {
+      font-size: 36px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      position: relative;
+    }
+
+    .title::after {
+      content: '';
+      width: 50px;
+      height: 4px;
+      background-color: #007BFF;
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 2px;
+    }
+
+    /* Button container for vertical stacking */
+    .button-container {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    /* Base button styling */
+    .copy-btn {
+      padding: 15px 30px;
+      font-size: 16px;
+      color: #fff;
+      background-color: #007BFF;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Hover effect */
+    .copy-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.2);
+      transition: left 0.3s ease;
+    }
+
+    .copy-btn:hover::before {
+      left: 0;
+    }
+
+    .copy-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+    }
+
+    .copy-btn:active {
+      transform: translateY(1px);
+      box-shadow: 0 2px 5px rgba(0, 123, 255, 0.3);
+    }
+
+    /* Toast notification styles */
+    #toast {
+      visibility: hidden;
+      min-width: 250px;
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      border-radius: 2px;
+      padding: 16px;
+      position: fixed;
+      z-index: 1;
+      left: 50%;
+      bottom: 30px;
+      font-size: 17px;
+      transform: translateX(-50%);
+    }
+
+    #toast.show {
+      visibility: visible;
+      animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    }
+
+    @keyframes fadein {
+      from {bottom: 0; opacity: 0;}
+      to {bottom: 30px; opacity: 1;}
+    }
+
+    @keyframes fadeout {
+      from {bottom: 30px; opacity: 1;}
+      to {bottom: 0; opacity: 0;}
+    }
+  </style>
+</head>
+<body>
+  <!-- Title -->
+  <div class="title">Hyper Hops Cords</div>
+
+  <div class="button-container">
+    <!-- Button 1: Main Lobby -->
+    <button class="copy-btn" onclick="copyToClipboard('/tp @p 0 -60 0')">Main Lobby</button>
+
+    <!-- Button 2: Parkour Area -->
+    <button class="copy-btn" onclick="copyToClipboard('/tp @p 4 -62 10412')">Parkour Area</button>
+
+    <!-- Button 3: Parkour Copy -->
+    <button class="copy-btn" onclick="copyToClipboard('/tp @p -1 -62 20416')">Parkour Copy</button>
+
+    <!-- Button 4: Command Blocks -->
+    <button class="copy-btn" onclick="copyToClipboard('/tp @p 6 -39 9810')">Command Blocks</button>
+  </div>
+
+  <!-- The toast notification -->
+  <div id="toast"></div>
+
+  <script>
+    function copyToClipboard(command) {
+      navigator.clipboard.writeText(command)
+        .then(() => {
+          showToast('Copied to clipboard: ' + command);
+        })
+        .catch(err => {
+          console.error('Failed to copy text: ', err);
+        });
+    }
+
+    function showToast(message) {
+      var toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.className = "show";
+      setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+    }
+  </script>
+</body>
+</html>
